@@ -1,0 +1,336 @@
+{
+  "datasets": [
+    {
+      "name": "febce9f7",
+      "displayName": "daily_revenue_trend",
+      "config": {
+        "version": "1.1",
+        "source": "suresh_db.dinedash_streaming.daily_revenue_trend",
+        "dimensions": [
+          {
+            "name": "order_date",
+            "expr": "source.order_date",
+            "displayName": "Order Date"
+          },
+          {
+            "name": "total_revenue",
+            "expr": "source.total_revenue",
+            "displayName": "Total Revenue"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "36c1de97",
+      "displayName": "top_selling_items",
+      "config": {
+        "version": "1.1",
+        "source": "suresh_db.dinedash_streaming.top_selling_items",
+        "dimensions": [
+          {
+            "name": "item_name",
+            "expr": "source.item_name",
+            "displayName": "Item Name"
+          },
+          {
+            "name": "total_qty_sold",
+            "expr": "source.total_qty_sold",
+            "displayName": "Total Qty Sold"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a6485c96",
+      "displayName": "total_orders_per_restaurant",
+      "config": {
+        "version": "1.1",
+        "source": "suresh_db.dinedash_streaming.total_orders_per_restaurant",
+        "dimensions": [
+          {
+            "name": "restaurant_name",
+            "expr": "source.restaurant_name",
+            "displayName": "Restaurant Name"
+          },
+          {
+            "name": "total_orders",
+            "expr": "source.total_orders",
+            "displayName": "Total Orders"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "c67f40e9",
+      "displayName": "2024 Analysis",
+      "layout": [
+        {
+          "widget": {
+            "name": "total-o",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a6485c96",
+                  "fields": [
+                    {
+                      "name": "restaurant_name",
+                      "expression": "`restaurant_name`"
+                    },
+                    {
+                      "name": "total_orders",
+                      "expression": "`total_orders`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Orders Per Restaurant"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "restaurant_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_orders",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "top-sold-items",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "36c1de97",
+                  "fields": [
+                    {
+                      "name": "total_qty_sold",
+                      "expression": "`total_qty_sold`"
+                    },
+                    {
+                      "name": "item_name",
+                      "expression": "`item_name`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Top Sold Items"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "total_qty_sold",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "item_name",
+                  "legend": {
+                    "hide": false,
+                    "position": "right",
+                    "title": ""
+                  },
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "angle-reversed"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "dail",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "febce9f7",
+                  "fields": [
+                    {
+                      "name": "order_date",
+                      "expression": "`order_date`"
+                    },
+                    {
+                      "name": "total_revenue",
+                      "expression": "`total_revenue`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Daily Revenue Trends"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "order_date",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_revenue",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "total-revenue",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "febce9f7",
+                  "fields": [
+                    {
+                      "name": "sum(total_revenue)",
+                      "expression": "SUM(`total_revenue`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Revenue"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_revenue)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "hideGroupSeparator": false,
+                    "negativeSign": "standard"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
